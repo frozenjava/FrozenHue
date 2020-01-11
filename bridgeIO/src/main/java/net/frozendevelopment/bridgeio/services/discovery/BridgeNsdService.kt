@@ -57,8 +57,10 @@ class BridgeNsdService private constructor(private val nsdManager: NsdManager): 
     }
 
     override fun stop() {
-        isDiscovering = false
-        nsdManager.stopServiceDiscovery(discoverer)
+        try {
+            isDiscovering = false
+            nsdManager.stopServiceDiscovery(discoverer)
+        } catch (ignore: java.lang.Exception) { }
     }
 
     companion object {
