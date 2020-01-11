@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/setup_nav_graph"
+    app:startDestination="@id/setupBridgeFragment">
+
+    <fragment
+        android:id="@+id/setupBridgeFragment"
+        android:name="net.frozendevelopment.frozenhue.modules.setupbridge.SetupBridgeFragment"
+        android:label="SetupBridgeFragment" />
+</navigation>
