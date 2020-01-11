@@ -6,5 +6,13 @@
     <fragment
         android:id="@+id/setupBridgeFragment"
         android:name="net.frozendevelopment.frozenhue.modules.setupbridge.SetupBridgeFragment"
-        android:label="SetupBridgeFragment" />
+        android:label="SetupBridgeFragment" >
+        <action
+            android:id="@+id/action_setupBridgeFragment_to_bridgeAuthFragment"
+            app:destination="@id/bridgeAuthFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bridgeAuthFragment"
+        android:name="net.frozendevelopment.frozenhue.modules.setupbridge.auth.BridgeAuthFragment"
+        android:label="BridgeAuthFragment" />
 </navigation>

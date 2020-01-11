@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_setup_bridge.*
 import net.frozendevelopment.frozenhue.R
 import net.frozendevelopment.frozenhue.extensions.applyText
+import net.frozendevelopment.frozenhue.extensions.navigateOnClick
 import net.frozendevelopment.frozenhue.extensions.observeLiveEvents
 import net.frozendevelopment.frozenhue.extensions.onTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +27,8 @@ class SetupBridgeFragment: Fragment(R.layout.fragment_setup_bridge) {
         observeLiveEvents(viewModel.state, ::applyStateToView)
 
         bridge_setup_host.onTextChanged { viewModel.host = it }
+
+        bridge_setup_connect.navigateOnClick(R.id.action_setupBridgeFragment_to_bridgeAuthFragment)
     }
 
     private fun applyStateToView(state: SetupBridgeState) {
