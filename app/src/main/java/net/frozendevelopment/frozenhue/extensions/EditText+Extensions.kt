@@ -5,7 +5,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 
 fun EditText.onTextChanged(onChange: (text: String?) -> Unit) {
-    this.addTextChangedListener(object: TextWatcher {
+    this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             onChange(s?.toString())
         }
@@ -15,7 +15,6 @@ fun EditText.onTextChanged(onChange: (text: String?) -> Unit) {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         }
-
     })
 }
 

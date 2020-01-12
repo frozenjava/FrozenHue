@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flow
 import net.frozendevelopment.bridgeio.services.BridgeService
 import net.frozendevelopment.bridgeio.services.BridgeServiceResult
 
-class BridgeNsdService private constructor(private val nsdManager: NsdManager): BridgeService<DiscoveryPayload> {
+class BridgeNsdService private constructor(private val nsdManager: NsdManager) : BridgeService<DiscoveryPayload> {
     private var isDiscovering: Boolean = false
     private val nsdEventChannel: Channel<NsdEvent> = Channel()
     private val discoverer = NsdDiscoverer(nsdEventChannel)
@@ -75,7 +75,6 @@ class BridgeNsdService private constructor(private val nsdManager: NsdManager): 
             return instance!!
         }
     }
-
 }
 
 private class NsdEvent(
@@ -84,7 +83,7 @@ private class NsdEvent(
     val serviceInfo: NsdServiceInfo?
 )
 
-private class NsdDiscoverer(private val nsdEventChannel: Channel<NsdEvent>): NsdManager.DiscoveryListener {
+private class NsdDiscoverer(private val nsdEventChannel: Channel<NsdEvent>) : NsdManager.DiscoveryListener {
     override fun onServiceFound(serviceInfo: NsdServiceInfo?) {
         nsdEventChannel.offer(NsdEvent(DiscoveryEvent.SERVICE_FOUND, null, serviceInfo))
     }
@@ -110,7 +109,7 @@ private class NsdDiscoverer(private val nsdEventChannel: Channel<NsdEvent>): Nsd
     }
 }
 
-private class NsdResolver(private val nsdEventChannel: Channel<NsdEvent>): NsdManager.ResolveListener {
+private class NsdResolver(private val nsdEventChannel: Channel<NsdEvent>) : NsdManager.ResolveListener {
 
     override fun onResolveFailed(serviceInfo: NsdServiceInfo?, errorCode: Int) {
         nsdEventChannel.offer(NsdEvent(DiscoveryEvent.SERVICE_RESOLVE_FAILED, errorCode, null))
@@ -119,5 +118,4 @@ private class NsdResolver(private val nsdEventChannel: Channel<NsdEvent>): NsdMa
     override fun onServiceResolved(serviceInfo: NsdServiceInfo?) {
         nsdEventChannel.offer(NsdEvent(DiscoveryEvent.SERVICE_RESOLVE_SUCCESS, null, serviceInfo))
     }
-
 }

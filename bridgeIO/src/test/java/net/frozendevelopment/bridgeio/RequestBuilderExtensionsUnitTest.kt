@@ -21,5 +21,4 @@ class RequestBuilderExtensionsUnitTest {
         Assert.assertEquals("text/json", request.headers["Content-Type"])
         Assert.assertEquals("FrozenHue", request.headers["User-Agent"])
     }
-
 }

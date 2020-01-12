@@ -9,15 +9,14 @@ import kotlinx.coroutines.launch
 import net.frozendevelopment.frozenhue.infrustructure.StatefulViewModel
 import net.frozendevelopment.frozenhue.servicehandlers.BridgeSetupHandler
 
-
-class SetupBridgeViewModel(private val bridgeHandler: BridgeSetupHandler): StatefulViewModel<SetupBridgeState>(), LifecycleObserver {
+class SetupBridgeViewModel(private val bridgeHandler: BridgeSetupHandler) : StatefulViewModel<SetupBridgeState>(), LifecycleObserver {
 
     override fun getDefaultState(): SetupBridgeState = SetupBridgeState()
 
     var host: String?
         get() = _state.host
         set(value) {
-            _state = _state.copy(host=value)
+            _state = _state.copy(host = value)
         }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -45,9 +44,7 @@ class SetupBridgeViewModel(private val bridgeHandler: BridgeSetupHandler): State
     }
 
     fun attemptBridgeAuth() = viewModelScope.launch(Dispatchers.IO) {
-
     }
 
     private fun handleDiscoveryError(exception: Exception) {}
-
 }

@@ -18,5 +18,4 @@ open class LightStateModel : RealmObject() {
     var mode: String? = null
     var reachable: Boolean = false
     var transitionTime: Int? = null
-
 }

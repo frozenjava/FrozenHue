@@ -9,7 +9,7 @@ import net.frozendevelopment.bridgeio.clients.GroupClient
 import net.frozendevelopment.bridgeio.dtos.GroupDTO
 import net.frozendevelopment.bridgeio.services.*
 
-class RoomPollingService private constructor():
+class RoomPollingService private constructor() :
     BridgeService<Map<Int, GroupDTO>> {
 
     private val client = ClientFactory.buildService(GroupClient::class.java)
@@ -57,7 +57,7 @@ class RoomPollingService private constructor():
                         data = client.getGroups()
                     )
                 )
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 emit(
                     BridgeServiceResult(
                         error = e
@@ -85,5 +85,4 @@ class RoomPollingService private constructor():
             return instance!!
         }
     }
-
 }

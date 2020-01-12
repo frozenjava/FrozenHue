@@ -27,8 +27,7 @@ object ClientFactory {
         chain.proceed(request)
     }
 
-
-    fun <T> buildService(clazz: Class<T>) : T {
+    fun <T> buildService(clazz: Class<T>): T {
 
         val client: OkHttpClient = OkHttpClient
             .Builder()
@@ -53,5 +52,4 @@ object ClientFactory {
 
         return retrofit.create(clazz)
     }
-
 }

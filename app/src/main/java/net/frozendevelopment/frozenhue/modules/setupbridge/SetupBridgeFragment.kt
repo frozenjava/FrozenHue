@@ -12,8 +12,7 @@ import net.frozendevelopment.frozenhue.extensions.observeLiveEvents
 import net.frozendevelopment.frozenhue.extensions.onTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-class SetupBridgeFragment: Fragment(R.layout.fragment_setup_bridge) {
+class SetupBridgeFragment : Fragment(R.layout.fragment_setup_bridge) {
 
     private val viewModel: SetupBridgeViewModel by viewModel()
 

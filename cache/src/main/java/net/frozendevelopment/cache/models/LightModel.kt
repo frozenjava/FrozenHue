@@ -3,7 +3,7 @@ package net.frozendevelopment.cache.models
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class LightModel: RealmObject() {
+open class LightModel : RealmObject() {
     @PrimaryKey
     var id: Int = -1
     var state: LightStateModel? = null

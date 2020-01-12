@@ -61,5 +61,4 @@ class HttpUrlBuilderExtensionsUnitTest {
 
         Assert.assertEquals("http://localhost/api/lights/1?on=true", newUrl.toString())
     }
-
 }

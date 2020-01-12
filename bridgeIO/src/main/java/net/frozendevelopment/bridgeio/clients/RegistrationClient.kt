@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-
 typealias registerResponseType = List<Map<String, Map<String, Any>>>
 
 interface RegistrationClient {
@@ -21,5 +20,4 @@ interface RegistrationClient {
     fun checkToken(
         @Path("token") token: String
     ): Call<Any>
-
 }

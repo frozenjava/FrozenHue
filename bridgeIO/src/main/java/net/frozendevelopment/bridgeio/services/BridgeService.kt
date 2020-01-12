@@ -9,5 +9,4 @@ interface BridgeService<TFlowResult> {
     fun start(): Flow<BridgeServiceResult<TFlowResult>>
 
     fun stop()
-
 }

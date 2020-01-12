@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import net.frozendevelopment.frozenhue.infrustructure.StatefulViewModel
 import net.frozendevelopment.frozenhue.servicehandlers.BridgeSetupHandler
 
-class BridgeAuthViewModel(private val bridgeHandler: BridgeSetupHandler): StatefulViewModel<BridgeAuthState>(), LifecycleObserver {
+class BridgeAuthViewModel(private val bridgeHandler: BridgeSetupHandler) : StatefulViewModel<BridgeAuthState>(), LifecycleObserver {
 
     override fun getDefaultState(): BridgeAuthState = BridgeAuthState()
 
@@ -31,5 +31,4 @@ class BridgeAuthViewModel(private val bridgeHandler: BridgeSetupHandler): Statef
     private fun handleAuthError(exception: Exception) {
         _state = _state.copy(label = exception.localizedMessage)
     }
-
 }

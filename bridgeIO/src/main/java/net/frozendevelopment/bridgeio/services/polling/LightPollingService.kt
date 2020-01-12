@@ -10,7 +10,7 @@ import net.frozendevelopment.bridgeio.dtos.LightDTO
 import net.frozendevelopment.bridgeio.services.*
 import java.lang.Exception
 
-class LightPollingService private constructor():
+class LightPollingService private constructor() :
     BridgeService<Map<Int, LightDTO>> {
 
     private val client = ClientFactory.buildService(LightClient::class.java)
@@ -58,7 +58,7 @@ class LightPollingService private constructor():
                         data = client.getLights()
                     )
                 )
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 emit(
                     BridgeServiceResult(
                         error = e
@@ -86,5 +86,4 @@ class LightPollingService private constructor():
             return instance!!
         }
     }
-
 }

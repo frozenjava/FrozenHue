@@ -20,7 +20,7 @@ class LightPollingServiceHandler(
         }
 
         val lights = result.data
-            ?.map { it.value.copy(id=it.key) }
+            ?.map { it.value.copy(id = it.key) }
             ?.map { LightModel().loadFromDTO(it) }
             ?: emptyList()
 
@@ -28,5 +28,4 @@ class LightPollingServiceHandler(
     }
 
     fun stop() = lightPoller.stop()
-
 }

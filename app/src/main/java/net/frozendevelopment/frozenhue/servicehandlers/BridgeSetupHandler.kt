@@ -6,11 +6,11 @@ import net.frozendevelopment.bridgeio.BridgeContext
 import net.frozendevelopment.bridgeio.services.auth.BridgeAuthService
 import net.frozendevelopment.bridgeio.services.discovery.BridgeNsdService
 import net.frozendevelopment.bridgeio.services.discovery.DiscoveryPayload
-import net.frozendevelopment.cache.models.BridgeModel
 
 class BridgeSetupHandler(
     private val discoveryService: BridgeNsdService,
-    private val authService: BridgeAuthService) {
+    private val authService: BridgeAuthService
+) {
 
     val isDiscovering: Boolean = discoveryService.getRunningStatus()
 
@@ -41,7 +41,6 @@ class BridgeSetupHandler(
     }
 
     fun stopAuthenticating() = authService.stop()
-
 }
 
 enum class BridgeSetupState {

@@ -4,7 +4,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.runBlocking
-import net.frozendevelopment.bridgeio.BridgeContext
 import net.frozendevelopment.bridgeio.ClientFactory
 import net.frozendevelopment.bridgeio.clients.RegistrationClient
 import net.frozendevelopment.bridgeio.clients.registerResponseType
@@ -16,8 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-class BridgeAuthService private constructor(): BridgeService<String> {
+class BridgeAuthService private constructor() : BridgeService<String> {
 
     private val client = ClientFactory.buildService(RegistrationClient::class.java)
     private var isPolling: Boolean = false
@@ -26,16 +24,15 @@ class BridgeAuthService private constructor(): BridgeService<String> {
 
     override fun start(): Flow<BridgeServiceResult<String>> = channelFlow {
         if (isPolling) {
-            send(BridgeServiceResult(error=ServiceAlreadyRunningException()))
+            send(BridgeServiceResult(error = ServiceAlreadyRunningException()))
             return@channelFlow
         }
 
         isPolling = true
 
         while (isPolling) {
-            val x = BridgeContext.host
             attemptAuth({ exception ->
-                send(BridgeServiceResult(error=exception))
+                send(BridgeServiceResult(error = exception))
             }, { token ->
                 send(BridgeServiceResult(data = token))
                 this@BridgeAuthService.stop()
@@ -48,13 +45,19 @@ class BridgeAuthService private constructor(): BridgeService<String> {
         isPolling = false
     }
 
-    private suspend fun attemptAuth(onError: suspend (e: Exception) -> Unit, onSuccess: suspend (String) -> Unit) {
-        client.register(RegistrationInputDTO()).enqueue(object: Callback<registerResponseType> {
+    private suspend fun attemptAuth(
+        onError: suspend (e: Exception) -> Unit,
+        onSuccess: suspend (String) -> Unit
+    ) {
+        client.register(RegistrationInputDTO()).enqueue(object : Callback<registerResponseType> {
             override fun onFailure(call: Call<registerResponseType>, t: Throwable) = runBlocking {
                 onError(Exception(t.localizedMessage))
             }
 
-            override fun onResponse(call: Call<registerResponseType>, response: Response<registerResponseType>) = runBlocking {
+            override fun onResponse(
+                call: Call<registerResponseType>,
+                response: Response<registerResponseType>
+            ) = runBlocking {
                 val payload = response.body()?.firstOrNull()
 
                 if (payload == null) {
@@ -96,5 +99,4 @@ class BridgeAuthService private constructor(): BridgeService<String> {
             return instance!!
         }
     }
-
 }

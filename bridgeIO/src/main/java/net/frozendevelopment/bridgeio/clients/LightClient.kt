@@ -10,17 +10,16 @@ import retrofit2.http.Path
 interface LightClient {
 
     @GET("lights")
-    suspend fun getLights() : Map<Int, LightDTO>
+    suspend fun getLights(): Map<Int, LightDTO>
 
     @GET("lights/{id}")
     suspend fun getLightById(
         @Path("id") id: Int
-    ) : LightDTO?
+    ): LightDTO?
 
     @PUT("lights/{id}/state")
     suspend fun updateLight(
         @Path("id") id: Int,
         @Body light: LightStateDTO
-    ) : List<Map<String, Any>>
-
+    ): List<Map<String, Any>>
 }

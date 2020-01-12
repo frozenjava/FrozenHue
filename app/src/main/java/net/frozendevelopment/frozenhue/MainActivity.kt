@@ -2,8 +2,6 @@ package net.frozendevelopment.frozenhue
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.findNavController
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,4 +10,3 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 }
-

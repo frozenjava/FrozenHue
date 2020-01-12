@@ -22,7 +22,7 @@ fun LightStateModel.loadFromDTO(dto: LightStateDTO): LightStateModel {
 }
 
 fun LightStateModel.toDTO(): LightStateDTO = LightStateDTO(
-    on =this.on,
+    on = this.on,
     brightness = this.brightness,
     hue = this.hue,
     saturation = this.saturation,
