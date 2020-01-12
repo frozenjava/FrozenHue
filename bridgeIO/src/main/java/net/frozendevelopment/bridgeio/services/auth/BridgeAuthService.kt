@@ -2,18 +2,13 @@ package net.frozendevelopment.bridgeio.services.auth
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.flow
 import net.frozendevelopment.bridgeio.ClientFactory
 import net.frozendevelopment.bridgeio.clients.RegistrationClient
-import net.frozendevelopment.bridgeio.clients.registerResponseType
 import net.frozendevelopment.bridgeio.dtos.RegistrationInputDTO
 import net.frozendevelopment.bridgeio.services.BridgeService
 import net.frozendevelopment.bridgeio.services.BridgeServiceResult
 import net.frozendevelopment.bridgeio.services.ServiceAlreadyRunningException
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class BridgeAuthService private constructor() : BridgeService<String> {
 
@@ -22,19 +17,19 @@ class BridgeAuthService private constructor() : BridgeService<String> {
 
     override fun getRunningStatus(): Boolean = isPolling
 
-    override fun start(): Flow<BridgeServiceResult<String>> = channelFlow {
+    override fun start(): Flow<BridgeServiceResult<String>> = flow {
         if (isPolling) {
-            send(BridgeServiceResult(error = ServiceAlreadyRunningException()))
-            return@channelFlow
+            emit(BridgeServiceResult(error = ServiceAlreadyRunningException()))
+            return@flow
         }
 
         isPolling = true
 
         while (isPolling) {
             attemptAuth({ exception ->
-                send(BridgeServiceResult(error = exception))
+                emit(BridgeServiceResult(error = exception))
             }, { token ->
-                send(BridgeServiceResult(data = token))
+                emit(BridgeServiceResult(data = token))
                 this@BridgeAuthService.stop()
             })
             delay(5000)
@@ -49,43 +44,39 @@ class BridgeAuthService private constructor() : BridgeService<String> {
         onError: suspend (e: Exception) -> Unit,
         onSuccess: suspend (String) -> Unit
     ) {
-        client.register(RegistrationInputDTO()).enqueue(object : Callback<registerResponseType> {
-            override fun onFailure(call: Call<registerResponseType>, t: Throwable) = runBlocking {
-                onError(Exception(t.localizedMessage))
-            }
+        val response = try {
+            client.register(RegistrationInputDTO())
+        } catch (e: Exception) {
+            onError(e)
+            return
+        }
 
-            override fun onResponse(
-                call: Call<registerResponseType>,
-                response: Response<registerResponseType>
-            ) = runBlocking {
-                val payload = response.body()?.firstOrNull()
+        val payload = response.firstOrNull()
 
-                if (payload == null) {
-                    onError(Exception("Unable to read bridge response."))
-                    return@runBlocking
-                }
+        if (payload == null) {
+            onError(Exception("Unable to read bridge response."))
+            return
+        }
 
-                if (payload.get("error") != null) {
-                    val error = payload.get("error") as Map<String, Any>
-                    val err: String = error.get("description") as? String ?: "Unknown error."
-                    onError(Exception(err))
-                    return@runBlocking
-                }
+        if (payload["error"] != null) {
+            val error = payload["error"] as Map<String, Any>
+            val err: String = error["description"] as? String ?: "Unknown error."
+            onError(Exception(err))
+            return
+        }
 
-                if (payload.get("success") != null) {
-                    val successBody = payload.get("success") as Map<String, Any>
-                    val token = successBody.get("username") as? String
-                    if (token != null) {
-                        onSuccess(token)
-                    } else {
-                        onError(Exception("Unable to read bridge response."))
-                    }
-                    return@runBlocking
-                }
-
+        if (payload["success"] != null) {
+            val successBody = payload["success"] as Map<String, Any>
+            val token = successBody["username"] as? String
+            if (token != null) {
+                onSuccess(token)
+            } else {
                 onError(Exception("Unable to read bridge response."))
             }
-        })
+            return
+        }
+
+        onError(Exception("Unable to read bridge response."))
     }
 
     companion object {
