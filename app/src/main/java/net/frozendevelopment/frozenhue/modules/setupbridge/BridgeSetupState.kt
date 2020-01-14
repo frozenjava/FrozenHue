@@ -1,9 +1,10 @@
 package net.frozendevelopment.frozenhue.modules.setupbridge
 
 data class BridgeSetupState(
-    var stage: BridgeSetupStage = BridgeSetupStage.DISCOVERY,
-    var discoveryState: BridgeDiscoveryState = BridgeDiscoveryState(),
-    var linkState: BridgeLinkState = BridgeLinkState()
+    val stage: BridgeSetupStage = BridgeSetupStage.DISCOVERY,
+    val discoveryState: BridgeDiscoveryState = BridgeDiscoveryState(),
+    val linkState: BridgeLinkState = BridgeLinkState(),
+    val saveState: BridgeSaveState = BridgeSaveState()
 )
 
 enum class BridgeSetupStage(val label: String) {
@@ -14,14 +15,21 @@ enum class BridgeSetupStage(val label: String) {
 }
 
 data class BridgeDiscoveryState(
-    var host: String? = null,
-    var previousHosts: List<String>? = null,
-    var discovering: Boolean = false,
-    var discoveryLabel: String? = null
+    val host: String? = null,
+    val previousHosts: List<String>? = null,
+    val discovering: Boolean = false,
+    val discoveryLabel: String? = null
 )
 
 data class BridgeLinkState(
-    var pairing: Boolean = false,
-    var label: String? = null,
-    var token: String? = null
+    val pairing: Boolean = false,
+    val label: String? = null,
+    val token: String? = null
+)
+
+data class BridgeSaveState(
+    val label: String = "Save the Bridge.",
+    val bridgeName: String? = null,
+    val error: String? = null,
+    val saving: Boolean = false
 )

@@ -6,22 +6,12 @@
     android:layout_height="wrap_content"
     tools:context=".modules.setupbridge.BridgeSetupDialog">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/bridge_setup_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:titleTextColor="@color/colorPrimaryDark"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <net.frozendevelopment.frozenhue.views.StationaryViewPager
         android:id="@+id/bridge_setup_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/bridge_setup_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

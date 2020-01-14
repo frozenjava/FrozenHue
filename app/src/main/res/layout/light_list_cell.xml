@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/cardColor"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/light_cell_title_text"
+            android:layout_width="142dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Title"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/light_cell_helper_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_currently_available"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@id/light_cell_title_text"
+            app:layout_constraintTop_toBottomOf="@id/light_cell_title_text" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/light_cell_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hapticFeedbackEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="16dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/light_cell_expander"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@id/light_cell_divider"
+            app:layout_constraintStart_toStartOf="@id/light_cell_switch"
+            app:layout_constraintEnd_toEndOf="@id/light_cell_switch"
+            android:layout_marginBottom="8dp"
+            app:srcCompat="@drawable/ic_color_lens_white_24dp"
+            android:contentDescription="@string/change_color"
+            app:layout_constraintCircleRadius="8dp"/>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/light_cell_fader"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="327dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:max="254"
+            android:progress="254"
+            app:layout_constraintTop_toTopOf="@id/light_cell_expander"
+            app:layout_constraintBottom_toBottomOf="@id/light_cell_expander"
+            app:layout_constraintEnd_toStartOf="@+id/light_cell_expander"
+            app:layout_constraintStart_toStartOf="@id/light_cell_title_text" />
+
+        <View
+            android:id="@+id/light_cell_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/dividerColor"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

@@ -4,8 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
+import net.frozendevelopment.bridgeio.BridgeContext
+import net.frozendevelopment.cache.stores.BridgeStore
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,8 +18,19 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment)
 
-        bottom_nav_view.setupWithNavController(navController)
+        loadBridge()
+    }
 
-        navController.navigate(R.id.navigation_setup_bridge_dialog)
+    private fun loadBridge() {
+        val bridgeStore = BridgeStore()
+
+        val bridge = bridgeStore.getDefaultBridge()
+
+        if (bridge == null) {
+            navController.navigate(R.id.navigation_setup_bridge_dialog)
+        } else {
+            BridgeContext.host = bridge.host
+            BridgeContext.token = bridge.token
+        }
     }
 }

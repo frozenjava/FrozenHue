@@ -1,9 +1,11 @@
 package net.frozendevelopment.cache.models
 
-import io.realm.RealmObject
+import io.realm.RealmModel
 import io.realm.annotations.PrimaryKey
+import io.realm.annotations.RealmClass
 
-open class LightModel : RealmObject() {
+@RealmClass
+open class LightModel : RealmModel {
     @PrimaryKey
     var id: Int = -1
     var state: LightStateModel? = null

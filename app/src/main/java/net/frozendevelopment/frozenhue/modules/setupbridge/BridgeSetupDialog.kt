@@ -15,6 +15,7 @@ import net.frozendevelopment.frozenhue.R
 import net.frozendevelopment.frozenhue.extensions.observeLiveEvents
 import net.frozendevelopment.frozenhue.modules.setupbridge.discovery.BridgeDiscoveryFragment
 import net.frozendevelopment.frozenhue.modules.setupbridge.linking.BridgeLinkFragment
+import net.frozendevelopment.frozenhue.modules.setupbridge.save.BridgeSaveFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class BridgeSetupDialog : BottomSheetDialogFragment() {
@@ -29,7 +30,8 @@ class BridgeSetupDialog : BottomSheetDialogFragment() {
 
         fragments.addAll(listOf(
             BridgeDiscoveryFragment(),
-            BridgeLinkFragment()
+            BridgeLinkFragment(),
+            BridgeSaveFragment()
         ))
         pagerAdapter = SetupAdapter(childFragmentManager)
 
@@ -54,7 +56,6 @@ class BridgeSetupDialog : BottomSheetDialogFragment() {
 
     private fun applyStateToView(stage: BridgeSetupStage) {
         view ?: return
-        bridge_setup_toolbar.title = stage.label
 
         val stageFragmentIndex = indexForStage(stage)
         if (bridge_setup_pager.currentItem == indexForStage(stage)) {
@@ -64,7 +65,7 @@ class BridgeSetupDialog : BottomSheetDialogFragment() {
         when (stage) {
             BridgeSetupStage.DISCOVERY -> bridge_setup_pager.setCurrentItem(stageFragmentIndex, true)
             BridgeSetupStage.LINKING -> bridge_setup_pager.setCurrentItem(stageFragmentIndex, true)
-            BridgeSetupStage.SAVE -> {}
+            BridgeSetupStage.SAVE -> bridge_setup_pager.setCurrentItem(stageFragmentIndex, true)
             BridgeSetupStage.DONE -> this.dismiss()
         }
     }
@@ -73,7 +74,7 @@ class BridgeSetupDialog : BottomSheetDialogFragment() {
         return when (stage) {
             BridgeSetupStage.DISCOVERY -> fragments.indexOfFirst { it is BridgeDiscoveryFragment }
             BridgeSetupStage.LINKING -> fragments.indexOfFirst { it is BridgeLinkFragment }
-            BridgeSetupStage.SAVE -> 0
+            BridgeSetupStage.SAVE -> fragments.indexOfFirst { it is BridgeSaveFragment }
             BridgeSetupStage.DONE -> 0
         }
     }

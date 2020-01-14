@@ -1,6 +1,8 @@
 package net.frozendevelopment.frozenhue.modules.setupbridge.linking
 
 import android.os.Bundle
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
@@ -23,6 +25,14 @@ class BridgeLinkFragment : Fragment(R.layout.bridge_link_layout) {
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        bridge_link_next_button.setOnClickListener {
+            viewModel.goToNext()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.startLinking()
@@ -36,6 +46,8 @@ class BridgeLinkFragment : Fragment(R.layout.bridge_link_layout) {
     private fun applyStateToView(state: BridgeLinkState) {
         view ?: return
 
-        bridge_pairing_label.text = state.label
+        bridge_link_label.text = state.label
+        bridge_link_throbber.isVisible = state.pairing
+        bridge_link_next_button.isVisible = !state.pairing && !state.token.isNullOrBlank()
     }
 }

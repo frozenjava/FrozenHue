@@ -1,9 +1,12 @@
 package net.frozendevelopment.frozenhue.modules.setupbridge
 
 import androidx.lifecycle.viewModelScope
+import io.realm.Case
+import io.realm.Realm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.frozendevelopment.bridgeio.BridgeContext
+import net.frozendevelopment.cache.models.BridgeModel
 import net.frozendevelopment.frozenhue.infrustructure.StatefulViewModel
 import net.frozendevelopment.frozenhue.servicehandlers.BridgeSetupHandler
 
@@ -13,19 +16,23 @@ class BridgeSetupViewModel(private val bridgeHandler: BridgeSetupHandler) : Stat
 
     var discoveryState: BridgeDiscoveryState
         get() = state.discoveryState
-        set(value) {
-            state = state.copy(discoveryState = value)
-        }
+        set(value) { state = state.copy(discoveryState = value) }
+
+    var linkState: BridgeLinkState
+        get() = state.linkState
+        set(value) { state = state.copy(linkState = value) }
+
+    var saveState: BridgeSaveState
+        get() = state.saveState
+        set(value) { state = state.copy(saveState = value) }
 
     var discoveryHost: String?
         get() = discoveryState.host
         set(value) { discoveryState = discoveryState.copy(host = value) }
 
-    var linkState: BridgeLinkState
-        get() = state.linkState
-        set(value) {
-            state.linkState = value
-        }
+    var bridgeName: String?
+        get() = saveState.bridgeName
+        set(value) { saveState = saveState.copy(bridgeName = value) }
 
     fun goToNext() {
         val next = when (state.stage) {
@@ -62,8 +69,10 @@ class BridgeSetupViewModel(private val bridgeHandler: BridgeSetupHandler) : Stat
         }
 
         bridgeHandler.stopDiscovery()
-        discoveryState.discovering = bridgeHandler.isDiscovering
-        discoveryState.discoveryLabel = "Discovery stopped."
+        discoveryState = discoveryState.copy(
+            discovering = bridgeHandler.isDiscovering,
+            discoveryLabel = "Discovery stopped."
+        )
     }
 
     fun validateHostAndContinue() {
@@ -72,8 +81,10 @@ class BridgeSetupViewModel(private val bridgeHandler: BridgeSetupHandler) : Stat
     }
 
     private fun handleDiscoveryError(exception: Exception) {
-        discoveryState.discovering = bridgeHandler.isDiscovering
-        discoveryState.discoveryLabel = exception.localizedMessage ?: "An error occurred."
+        discoveryState = discoveryState.copy(
+            discovering = bridgeHandler.isDiscovering,
+            discoveryLabel = exception.localizedMessage ?: "An error occurred."
+        )
     }
 
     fun startLinking() = viewModelScope.launch(Dispatchers.IO) {
@@ -81,10 +92,11 @@ class BridgeSetupViewModel(private val bridgeHandler: BridgeSetupHandler) : Stat
             return@launch
         }
 
-        linkState = linkState.copy(pairing = true)
+        linkState = linkState.copy(pairing = true, label = "Press Link button on Bridge.")
 
-        bridgeHandler.link(this@BridgeSetupViewModel::handleLinkingError) {
-            linkState = linkState.copy(pairing = false, label = "Linked!")
+        bridgeHandler.link(this@BridgeSetupViewModel::handleLinkingError) { token ->
+            stopLinking()
+            linkState = linkState.copy(pairing = false, label = "Bridge Linked!", token = token)
         }
     }
 
@@ -102,5 +114,35 @@ class BridgeSetupViewModel(private val bridgeHandler: BridgeSetupHandler) : Stat
             label = exception.localizedMessage,
             pairing = bridgeHandler.isLinking
         )
+    }
+
+    fun save() {
+        if (saveState.bridgeName.isNullOrEmpty()) {
+            saveState = saveState.copy(error = "Please enter a name.")
+            return
+        }
+
+        val realm = Realm.getDefaultInstance()
+
+        val existingModel = realm.where(BridgeModel::class.java)
+            .equalTo("name", saveState.bridgeName, Case.INSENSITIVE)
+            .findFirst()
+
+        if (existingModel != null) {
+            saveState = saveState.copy(error = "A bridge already exists with name.")
+            return
+        }
+
+        saveState = saveState.copy(error = null)
+
+        realm.executeTransactionAsync {
+            it.insertOrUpdate(BridgeModel(
+                name = saveState.bridgeName!!,
+                host = discoveryState.host!!,
+                token = linkState.token!!
+            ))
+        }
+
+        goToNext()
     }
 }

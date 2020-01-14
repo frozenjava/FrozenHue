@@ -12,11 +12,11 @@ class BridgeSetupHandler(
     private val linkService: BridgeLinkService
 ) {
 
-    val isDiscovering: Boolean = discoveryService.getRunningStatus()
+    val isDiscovering: Boolean
+        get() = discoveryService.getRunningStatus()
 
-    val isLinking: Boolean = linkService.getRunningStatus()
-
-    fun stopDiscovery() = discoveryService.stop()
+    val isLinking: Boolean
+        get() = linkService.getRunningStatus()
 
     suspend fun discover(onError: (Exception) -> Unit, onHostDiscovered: (DiscoveryPayload) -> Unit) = discoveryService.start().collect { result ->
         if (result.error != null) {
@@ -31,22 +31,18 @@ class BridgeSetupHandler(
         }
     }
 
-    suspend fun link(onError: (Exception) -> Unit, onSuccess: () -> Unit) = linkService.start().collect { result ->
+    fun stopDiscovery() = discoveryService.stop()
+
+    suspend fun link(onError: (Exception) -> Unit, onSuccess: (String) -> Unit) = linkService.start().collect { result ->
         if (result.error != null) {
             onError(result.error!!)
             Log.d("HOST_DISCOVERY", "ERROR: ${result.error!!.localizedMessage}")
         }
 
         if (result.data != null) {
-            onSuccess()
+            onSuccess(result.data!!)
         }
     }
 
     fun stopLinking() = linkService.stop()
-}
-
-enum class BridgeSetupState {
-    IDLE,
-    DISCOVERING,
-    AUTHENTICATING,
 }
