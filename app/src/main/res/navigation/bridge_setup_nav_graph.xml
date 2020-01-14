@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/bridge_setup_nav_graph"
+    app:startDestination="@id/bridgeDiscoveryFragment">
+
+    <fragment
+        android:id="@+id/bridgeDiscoveryFragment"
+        android:name="net.frozendevelopment.frozenhue.modules.setupbridge.discovery.BridgeDiscoveryFragment"
+        android:label="BridgeDiscoveryFragment" >
+        <action
+            android:id="@+id/action_bridgeDiscoveryFragment_to_bridgePairingFragment"
+            app:destination="@id/bridgePairingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bridgePairingFragment"
+        android:name="net.frozendevelopment.frozenhue.modules.setupbridge.linking.BridgeLinkFragment"
+        android:label="BridgePairingFragment" />
+</navigation>

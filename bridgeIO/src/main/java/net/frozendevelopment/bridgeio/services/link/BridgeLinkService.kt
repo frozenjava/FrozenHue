@@ -1,4 +1,4 @@
-package net.frozendevelopment.bridgeio.services.auth
+package net.frozendevelopment.bridgeio.services.link
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +10,7 @@ import net.frozendevelopment.bridgeio.services.BridgeService
 import net.frozendevelopment.bridgeio.services.BridgeServiceResult
 import net.frozendevelopment.bridgeio.services.ServiceAlreadyRunningException
 
-class BridgeAuthService private constructor() : BridgeService<String> {
+class BridgeLinkService private constructor() : BridgeService<String> {
 
     private val client = ClientFactory.buildService(RegistrationClient::class.java)
     private var isPolling: Boolean = false
@@ -26,11 +26,11 @@ class BridgeAuthService private constructor() : BridgeService<String> {
         isPolling = true
 
         while (isPolling) {
-            attemptAuth({ exception ->
+            attemptLink({ exception ->
                 emit(BridgeServiceResult(error = exception))
             }, { token ->
                 emit(BridgeServiceResult(data = token))
-                this@BridgeAuthService.stop()
+                this@BridgeLinkService.stop()
             })
             delay(5000)
         }
@@ -40,7 +40,7 @@ class BridgeAuthService private constructor() : BridgeService<String> {
         isPolling = false
     }
 
-    private suspend fun attemptAuth(
+    private suspend fun attemptLink(
         onError: suspend (e: Exception) -> Unit,
         onSuccess: suspend (String) -> Unit
     ) {
@@ -80,11 +80,11 @@ class BridgeAuthService private constructor() : BridgeService<String> {
     }
 
     companion object {
-        private var instance: BridgeAuthService? = null
+        private var instance: BridgeLinkService? = null
 
-        fun getInstance(): BridgeAuthService {
+        fun getInstance(): BridgeLinkService {
             if (instance == null) {
-                instance = BridgeAuthService()
+                instance = BridgeLinkService()
             }
 
             return instance!!

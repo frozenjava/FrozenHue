@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Frozen Hue</string>
+    <string name="lights">Lights</string>
+    <string name="settings">Settings</string>
 </resources>

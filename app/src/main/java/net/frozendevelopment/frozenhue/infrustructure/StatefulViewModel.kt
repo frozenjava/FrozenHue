@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 
 abstract class StatefulViewModel<TState> : ViewModel() {
 
-    val state: MutableLiveData<TState> = MutableLiveData(getDefaultState())
+    val liveState: MutableLiveData<TState> = MutableLiveData(getDefaultState())
 
-    protected var _state: TState
-        get() = state.value ?: getDefaultState()
-        set(value) { state.postValue(value) }
+    var state: TState
+        get() = liveState.value ?: getDefaultState()
+        set(value) {
+            liveState.postValue(value)
+        }
 
     protected abstract fun getDefaultState(): TState
 }

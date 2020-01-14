@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/app_nav_graph"
+    app:startDestination="@id/navigation_lights_list">
+    <fragment
+        android:id="@+id/navigation_lights_list"
+        android:name="net.frozendevelopment.frozenhue.modules.lights.LightsListFragment"
+        android:label="LightsListFragment" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="net.frozendevelopment.frozenhue.modules.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <dialog
+        android:id="@+id/navigation_setup_bridge_dialog"
+        android:name="net.frozendevelopment.frozenhue.modules.setupbridge.BridgeSetupDialog"
+        android:label="SetupBridgeDialog" />
+    <fragment
+        android:id="@+id/bridgeDiscoveryFragment2"
+        android:name="net.frozendevelopment.frozenhue.modules.setupbridge.discovery.BridgeDiscoveryFragment"
+        android:label="BridgeDiscoveryFragment" />
+</navigation>

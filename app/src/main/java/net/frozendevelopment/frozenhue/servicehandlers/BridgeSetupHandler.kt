@@ -3,16 +3,18 @@ package net.frozendevelopment.frozenhue.servicehandlers
 import android.util.Log
 import kotlinx.coroutines.flow.collect
 import net.frozendevelopment.bridgeio.BridgeContext
-import net.frozendevelopment.bridgeio.services.auth.BridgeAuthService
+import net.frozendevelopment.bridgeio.services.link.BridgeLinkService
 import net.frozendevelopment.bridgeio.services.discovery.BridgeNsdService
 import net.frozendevelopment.bridgeio.services.discovery.DiscoveryPayload
 
 class BridgeSetupHandler(
     private val discoveryService: BridgeNsdService,
-    private val authService: BridgeAuthService
+    private val linkService: BridgeLinkService
 ) {
 
     val isDiscovering: Boolean = discoveryService.getRunningStatus()
+
+    val isLinking: Boolean = linkService.getRunningStatus()
 
     fun stopDiscovery() = discoveryService.stop()
 
@@ -29,7 +31,7 @@ class BridgeSetupHandler(
         }
     }
 
-    suspend fun authenticate(onError: (Exception) -> Unit, onSuccess: () -> Unit) = authService.start().collect { result ->
+    suspend fun link(onError: (Exception) -> Unit, onSuccess: () -> Unit) = linkService.start().collect { result ->
         if (result.error != null) {
             onError(result.error!!)
             Log.d("HOST_DISCOVERY", "ERROR: ${result.error!!.localizedMessage}")
@@ -40,7 +42,7 @@ class BridgeSetupHandler(
         }
     }
 
-    fun stopAuthenticating() = authService.stop()
+    fun stopLinking() = linkService.stop()
 }
 
 enum class BridgeSetupState {
