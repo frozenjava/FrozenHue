@@ -6,6 +6,7 @@ import net.frozendevelopment.bridgeio.services.link.BridgeLinkService
 import net.frozendevelopment.bridgeio.services.discovery.BridgeNsdService
 import net.frozendevelopment.bridgeio.services.polling.LightPollingService
 import net.frozendevelopment.bridgeio.services.polling.RoomPollingService
+import net.frozendevelopment.frozenhue.modules.lights.LightsListViewModel
 import net.frozendevelopment.frozenhue.modules.setupbridge.BridgeSetupViewModel
 import net.frozendevelopment.frozenhue.servicehandlers.BridgeSetupHandler
 import org.koin.android.ext.koin.androidApplication
@@ -29,4 +30,5 @@ val serviceHandlersModule = module {
 
 val viewModelsModule = module {
     viewModel { BridgeSetupViewModel(get()) }
+    viewModel { LightsListViewModel() }
 }
