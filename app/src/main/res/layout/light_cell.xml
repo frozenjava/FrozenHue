@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/light_cell_title_text"
+            android:id="@+id/light_list_cell_title_text"
             android:layout_width="142dp"
             android:layout_height="37dp"
             android:layout_marginStart="8dp"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:text="@string/not_currently_available"
             android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="@id/light_cell_title_text"
-            app:layout_constraintTop_toBottomOf="@id/light_cell_title_text" />
+            app:layout_constraintStart_toStartOf="@id/light_list_cell_title_text"
+            app:layout_constraintTop_toBottomOf="@id/light_list_cell_title_text" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/light_cell_switch"
@@ -67,7 +67,7 @@
             app:layout_constraintTop_toTopOf="@id/light_cell_expander"
             app:layout_constraintBottom_toBottomOf="@id/light_cell_expander"
             app:layout_constraintEnd_toStartOf="@+id/light_cell_expander"
-            app:layout_constraintStart_toStartOf="@id/light_cell_title_text" />
+            app:layout_constraintStart_toStartOf="@id/light_list_cell_title_text" />
 
         <View
             android:id="@+id/light_cell_divider"

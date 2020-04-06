@@ -1,21 +1,23 @@
 package net.frozendevelopment.frozenhue.modules.lights.views
 
+import androidx.core.view.isVisible
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
-import net.frozendevelopment.cache.models.LightModel
 import net.frozendevelopment.frozenhue.R
+import net.frozendevelopment.frozenhue.modules.lights.LightState
+import kotlinx.android.synthetic.main.light_cell.view.*
 
-class LightCellItem(private val light: LightModel, private val toggleLight: (LightModel) -> Unit) : Item() {
+class LightCellItem(private val light: LightState, private val toggleLight: (LightState) -> Unit) : Item() {
 
-    override fun getLayout(): Int = R.layout.light_list_cell
+    override fun getLayout(): Int = R.layout.light_cell
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) = with(viewHolder) {
-//        light_cell_title_text.text = light.name ?: "Unknown"
-//        light_cell_switch.isChecked = light.on // .setChecked(light.on, false)
-//        light_cell_switch.isEnabled = light.reachable
-//        light_cell_fader.isEnabled = light.reachable
-//        light_cell_expander.isEnabled = light.reachable
-//        light_cell_helper_text.isVisible = !light.reachable
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) = with(viewHolder.itemView) {
+        light_list_cell_title_text.text = light.name
+        light_cell_switch.isChecked = light.on // .setChecked(light.on, false)
+        light_cell_switch.isEnabled = light.reachable
+        light_cell_fader.isEnabled = light.reachable
+        light_cell_expander.isEnabled = light.reachable
+        light_cell_helper_text.isVisible = !light.reachable
 //        light_cell_fader.setBackgroundColor(XYZtoRGB(light.x, light.y, light.z).toInt())
     }
 

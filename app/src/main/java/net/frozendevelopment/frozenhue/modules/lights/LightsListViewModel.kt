@@ -5,21 +5,41 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.viewModelScope
 import io.realm.Realm
+import io.realm.RealmChangeListener
+import io.realm.RealmResults
 import kotlinx.coroutines.launch
 import net.frozendevelopment.cache.models.LightModel
+import net.frozendevelopment.frozenhue.extensions.toLightState
 
 import net.frozendevelopment.frozenhue.infrustructure.StatefulViewModel
+import net.frozendevelopment.frozenhue.servicehandlers.LightPollingServiceHandler
 
-class LightsListViewModel : StatefulViewModel<LightsListState>(), LifecycleObserver {
+class LightsListViewModel(
+    private val pollingServiceHandler: LightPollingServiceHandler
+) : StatefulViewModel<LightsListState>(), LifecycleObserver {
+
+    private val realm: Realm by lazy { Realm.getDefaultInstance() }
+
+    private val changeListener = RealmChangeListener<RealmResults<LightModel>> { results ->
+        state = state.copy(lights = results.map { it.toLightState() })
+    }
 
     override fun getDefaultState(): LightsListState = LightsListState()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun startObserving() = viewModelScope.launch {
-        val realm = Realm.getDefaultInstance()
+    fun subscribeToRealm() {
+        realm.where(LightModel::class.java).findAllAsync().addChangeListener(changeListener)
+    }
 
-        realm.where(LightModel::class.java).findAllAsync().addChangeListener { results ->
-            state = state.copy(lights = results.toList())
-        }
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun unsubscribeFromRealm() { realm.removeChangeListener(changeListener as RealmChangeListener<Realm>) }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun startPollBridge() = viewModelScope.launch { pollingServiceHandler.start(::handlePollingException) }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun stopPollingBridge() = pollingServiceHandler.stop()
+
+    private fun handlePollingException(e: Exception) {
     }
 }

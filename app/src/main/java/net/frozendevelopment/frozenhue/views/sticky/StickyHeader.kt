@@ -1,0 +1,3 @@
+package net.frozendevelopment.frozenhue.views.sticky
+
+interface StickyHeaderType

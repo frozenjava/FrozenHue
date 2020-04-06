@@ -2,10 +2,7 @@ package net.frozendevelopment.frozenhue
 
 import android.app.Application
 import net.frozendevelopment.cache.setupLocalCaching
-import net.frozendevelopment.frozenhue.di.bridgeServicesModule
-import net.frozendevelopment.frozenhue.di.serviceHandlersModule
-import net.frozendevelopment.frozenhue.di.systemServicesModue
-import net.frozendevelopment.frozenhue.di.viewModelsModule
+import net.frozendevelopment.frozenhue.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -23,6 +20,7 @@ class FrozenHueApp : Application() {
             listOf(
                 systemServicesModue,
                 bridgeServicesModule,
+                storesModule,
                 serviceHandlersModule,
                 viewModelsModule
             )

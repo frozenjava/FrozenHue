@@ -1,14 +1,13 @@
 package net.frozendevelopment.frozenhue.servicehandlers
 
 import kotlinx.coroutines.flow.collect
-import net.frozendevelopment.bridgeio.dtos.LightDTO
-import net.frozendevelopment.bridgeio.services.BridgeService
+import net.frozendevelopment.bridgeio.services.polling.LightPollingServiceType
 import net.frozendevelopment.cache.models.LightModel
 import net.frozendevelopment.cache.stores.LightStore
 import net.frozendevelopment.frozenhue.extensions.loadFromDTO
 
 class LightPollingServiceHandler(
-    private val lightPoller: BridgeService<Map<Int, LightDTO>>,
+    private val lightPoller: LightPollingServiceType,
     private val lightStore: LightStore
 ) {
 

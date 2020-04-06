@@ -1,7 +1,13 @@
 package net.frozendevelopment.frozenhue.modules.lights
 
-import net.frozendevelopment.cache.models.LightModel
-
 data class LightsListState(
-    val lights: List<LightModel> = emptyList()
+    val lights: List<LightState> = emptyList()
+)
+
+data class LightState(
+    val id: Int,
+    val name: String,
+    val on: Boolean,
+    val reachable: Boolean,
+    val brightness: Int
 )

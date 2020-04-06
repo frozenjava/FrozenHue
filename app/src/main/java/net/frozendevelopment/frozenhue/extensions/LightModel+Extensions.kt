@@ -3,6 +3,7 @@ package net.frozendevelopment.frozenhue.extensions
 import net.frozendevelopment.bridgeio.dtos.LightDTO
 import net.frozendevelopment.cache.models.LightModel
 import net.frozendevelopment.cache.models.LightStateModel
+import net.frozendevelopment.frozenhue.modules.lights.LightState
 
 fun LightModel.loadFromDTO(dto: LightDTO): LightModel {
     this.id = dto.id
@@ -31,4 +32,12 @@ fun LightModel.toDTO(): LightDTO = LightDTO(
     manufacturer = this.manufacturer,
     swVersion = this.swVersion,
     swConfig = this.swConfig
+)
+
+fun LightModel.toLightState(): LightState = LightState(
+    id = this.id,
+    name = this.name ?: "Unknown",
+    on = this.state?.on ?: false,
+    reachable = this.state?.reachable ?: false,
+    brightness = this.state?.brightness ?: 0
 )

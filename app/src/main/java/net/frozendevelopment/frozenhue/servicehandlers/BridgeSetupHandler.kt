@@ -3,13 +3,13 @@ package net.frozendevelopment.frozenhue.servicehandlers
 import android.util.Log
 import kotlinx.coroutines.flow.collect
 import net.frozendevelopment.bridgeio.BridgeContext
-import net.frozendevelopment.bridgeio.services.link.BridgeLinkService
 import net.frozendevelopment.bridgeio.services.discovery.BridgeNsdService
 import net.frozendevelopment.bridgeio.services.discovery.DiscoveryPayload
+import net.frozendevelopment.bridgeio.services.link.BridgeLinkServiceType
 
 class BridgeSetupHandler(
     private val discoveryService: BridgeNsdService,
-    private val linkService: BridgeLinkService
+    private val linkService: BridgeLinkServiceType
 ) {
 
     val isDiscovering: Boolean

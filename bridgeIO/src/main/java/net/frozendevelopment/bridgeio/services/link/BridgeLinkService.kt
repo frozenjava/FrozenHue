@@ -10,7 +10,9 @@ import net.frozendevelopment.bridgeio.services.BridgeService
 import net.frozendevelopment.bridgeio.services.BridgeServiceResult
 import net.frozendevelopment.bridgeio.services.ServiceAlreadyRunningException
 
-class BridgeLinkService private constructor() : BridgeService<String> {
+interface BridgeLinkServiceType : BridgeService<String>
+
+class BridgeLinkService private constructor() : BridgeLinkServiceType {
 
     private val client = ClientFactory.buildService(RegistrationClient::class.java)
     private var isPolling: Boolean = false
